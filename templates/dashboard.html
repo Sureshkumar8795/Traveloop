@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Traveloop - Home</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f8f8f8; }
+
+        /* NAVBAR */
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            height: 64px;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .navbar-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a1a1a;
+            text-decoration: none;
+        }
+        .logo-icon {
+            width: 38px; height: 38px;
+            background: #f5a623;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px;
+        }
+        .navbar-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .navbar-links a {
+            padding: 8px 18px;
+            border-radius: 20px;
+            text-decoration: none;
+            color: #555;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .navbar-links a:hover { color: #1a1a1a; }
+        .navbar-links a.active {
+            background: #fff3e0;
+            color: #f5a623;
+            font-weight: 600;
+        }
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: #f5f5f5;
+            border-radius: 24px;
+            padding: 8px 18px;
+            gap: 8px;
+            width: 260px;
+        }
+        .search-bar input {
+            border: none;
+            background: none;
+            outline: none;
+            font-size: 14px;
+            color: #555;
+            width: 100%;
+        }
+        .avatar {
+            width: 38px; height: 38px;
+            background: #f5a623;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        /* HERO */
+        .hero {
+            margin: 24px 32px;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            height: 300px;
+            background: linear-gradient(135deg, #f5a623 0%, #2ec4b6 100%);
+        }
+        .hero-overlay {
+            position: absolute; inset: 0;
+            background: rgba(0,0,0,0.35);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 48px;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            width: fit-content;
+            margin-bottom: 16px;
+        }
+        .hero h1 {
+            color: white;
+            font-size: 42px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 12px;
+        }
+        .hero p { color: rgba(255,255,255,0.85); font-size: 16px; margin-bottom: 24px; }
+        .hero-search {
+            display: flex;
+            background: white;
+            border-radius: 50px;
+            overflow: hidden;
+            width: 500px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        .hero-search input {
+            flex: 1;
+            padding: 14px 20px;
+            border: none;
+            outline: none;
+            font-size: 15px;
+        }
+        .hero-search button {
+            padding: 14px 28px;
+            background: #f5a623;
+            color: white;
+            border: none;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 50px;
+            margin: 4px;
+        }
+
+        /* CONTENT */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 32px 40px; }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 32px 0 16px;
+        }
+        .section-header h2 { font-size: 22px; font-weight: 700; color: #1a1a1a; }
+        .section-header p { color: #888; font-size: 14px; }
+        .section-header a { color: #2ec4b6; text-decoration: none; font-weight: 600; font-size: 14px; }
+
+        /* TRIP CARDS */
+        .trips-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .trip-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .trip-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+        .trip-card-img {
+            height: 180px;
+            position: relative;
+            overflow: hidden;
+        }
+        .trip-card-img img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+        }
+        .trip-card-img .badge-upcoming {
+            position: absolute;
+            top: 12px; left: 12px;
+            background: #fff3e0;
+            color: #f5a623;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .trip-card-img .badge-budget {
+            position: absolute;
+            top: 12px; right: 12px;
+            background: rgba(255,255,255,0.95);
+            color: #1a1a1a;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+        .trip-card-body { padding: 16px; }
+        .trip-card-body h3 { font-size: 17px; font-weight: 700; color: #1a1a1a; margin-bottom: 6px; }
+        .trip-date { color: #888; font-size: 13px; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+        .trip-cities { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+        .city-tag {
+            background: #f5f5f5;
+            color: #555;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: flex; align-items: center; gap: 4px;
+        }
+        .trip-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 12px;
+            border-top: 1px solid #f0f0f0;
+        }
+        .trip-card-footer span { color: #888; font-size: 13px; display: flex; align-items: center; gap: 6px; }
+        .trip-actions { display: flex; gap: 12px; }
+        .trip-actions a { color: #888; text-decoration: none; font-size: 16px; transition: color 0.2s; }
+        .trip-actions a:hover { color: #f5a623; }
+        .trip-actions a.del:hover { color: #e74c3c; }
+
+        /* TN BUDGET */
+        .tn-section {
+            background: white;
+            border-radius: 16px;
+            padding: 28px;
+            margin-top: 32px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        .tn-section h2 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+        .tn-section p { color: #888; font-size: 14px; margin-bottom: 20px; }
+        .tn-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+        .tn-card {
+            border: 2px solid #f0f0f0;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            transition: border-color 0.2s;
+        }
+        .tn-card:hover { border-color: #f5a623; }
+        .tn-card .tn-emoji { font-size: 32px; margin-bottom: 8px; }
+        .tn-card h4 { font-size: 15px; font-weight: 700; color: #1a1a1a; margin-bottom: 4px; }
+        .tn-card .tn-budget { font-size: 18px; font-weight: 800; color: #f5a623; margin-bottom: 4px; }
+        .tn-card .tn-days { font-size: 12px; color: #888; }
+        .btn-orange {
+            display: inline-block;
+            padding: 12px 28px;
+            background: #f5a623;
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-orange:hover { background: #e09415; }
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #aaa;
+        }
+        .empty-state p { font-size: 18px; margin: 16px 0; }
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <a href="/dashboard" class="navbar-logo">
+        <div class="logo-icon">✈️</div>
+        Traveloop
+    </a>
+    <div class="navbar-links">
+        <a href="/dashboard" class="active">Home</a>
+        <a href="/my-trips">My Trips</a>
+        <a href="/budget">Budget</a>
+    </div>
+    <div class="navbar-right">
+        <div class="search-bar">
+            <span>🔍</span>
+            <input type="text" placeholder="Search destinations, trips...">
+        </div>
+        <span>🔔</span>
+        <div class="avatar">{{ session['user_name'][0].upper() }}</div>
+    </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero" style="background-image: url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1200'); background-size: cover; background-position: center;">
+    <div class="hero-overlay">
+        <div class="hero-badge">✨ AI-powered planning</div>
+        <h1>Where to next?</h1>
+        <p>Discover, plan, and budget your perfect trip in minutes.</p>
+        <div class="hero-search">
+            <input type="text" placeholder="🔍  Search a destination...">
+            <button onclick="window.location.href='/create-trip'">Plan My Trip</button>
+        </div>
+    </div>
+</div>
+
+<!-- CONTENT -->
+<div class="container">
+
+    <!-- Upcoming Trips -->
+    <div class="section-header">
+        <div>
+            <h2>Your Upcoming Trips</h2>
+            <p>Plans waiting to become memories</p>
+        </div>
+        <a href="/my-trips">View all →</a>
+    </div>
+
+    {% if trips %}
+    <div class="trips-grid">
+        {% for trip in trips %}
+        <div class="trip-card">
+            <div class="trip-card-img">
+                <img src="https://source.unsplash.com/400x200/?travel,{{ trip.name }}" 
+                     onerror="this.src='https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=400'"
+                     alt="{{ trip.name }}">
+                <span class="badge-upcoming">Upcoming</span>
+            </div>
+            <div class="trip-card-body">
+                <h3>{{ trip.name }}</h3>
+                <div class="trip-date">📅 {{ trip.start_date }} → {{ trip.end_date }}</div>
+                <div class="trip-cities">
+                    <span class="city-tag">📍 Tamil Nadu</span>
+                </div>
+                <div class="trip-card-footer">
+                    <span>🗓 Budget set</span>
+                    <div class="trip-actions">
+                        <a href="#">👁</a>
+                        <a href="#">✏️</a>
+                        <a href="#" class="del">🗑</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div style="font-size:64px;">🌍</div>
+        <p>Ippo vara trip illai! Oru trip create pannu!</p>
+        <a href="/create-trip" class="btn-orange">+ Plan New Trip</a>
+    </div>
+    {% endif %}
+
+    <!-- Tamil Nadu Budget Recommendations -->
+    <div class="tn-section">
+        <h2>🏛️ Tamil Nadu Trip Budget Guide</h2>
+        <p>Popular destinations with estimated budgets (per person)</p>
+        <div class="tn-grid">
+            <div class="tn-card">
+                <div class="tn-emoji">🏖️</div>
+                <h4>Chennai</h4>
+                <div class="tn-budget">₹8,000</div>
+                <div class="tn-days">3 days recommended</div>
+            </div>
+            <div class="tn-card">
+                <div class="tn-emoji">🏔️</div>
+                <h4>Ooty</h4>
+                <div class="tn-budget">₹6,500</div>
+                <div class="tn-days">2 days recommended</div>
+            </div>
+            <div class="tn-card">
+                <div class="tn-emoji">🛕</div>
+                <h4>Madurai</h4>
+                <div class="tn-budget">₹5,000</div>
+                <div class="tn-days">2 days recommended</div>
+            </div>
+            <div class="tn-card">
+                <div class="tn-emoji">🌊</div>
+                <h4>Rameswaram</h4>
+                <div class="tn-budget">₹4,500</div>
+                <div class="tn-days">2 days recommended</div>
+            </div>
+            <div class="tn-card">
+                <div class="tn-emoji">🏝️</div>
+                <h4>Kanyakumari</h4>
+                <div class="tn-budget">₹5,500</div>
+                <div class="tn-days">2 days recommended</div>
+            </div>
+            <div class="tn-card">
+                <div class="tn-emoji">🌿</div>
+                <h4>Kodaikanal</h4>
+                <div class="tn-budget">₹7,000</div>
+                <div class="tn-days">3 days recommended</div>
+            </div>
+            <div class="tn-card">
+                <div class="tn-emoji">🏛️</div>
+                <h4>Thanjavur</h4>
+                <div class="tn-budget">₹4,000</div>
+                <div class="tn-days">1 day recommended</div>
+            </div>
+            <div class="tn-card">
+                <div class="tn-emoji">🐘</div>
+                <h4>Mahabalipuram</h4>
+                <div class="tn-budget">₹3,500</div>
+                <div class="tn-days">1 day recommended</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

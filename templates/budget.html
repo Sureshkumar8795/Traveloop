@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Budget - Traveloop</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f8f8f8; }
+        .navbar {
+            display: flex; align-items: center;
+            justify-content: space-between;
+            padding: 0 32px; height: 64px;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            position: sticky; top: 0; z-index: 100;
+        }
+        .navbar-logo {
+            display: flex; align-items: center; gap: 10px;
+            font-size: 22px; font-weight: 700;
+            color: #1a1a1a; text-decoration: none;
+        }
+        .logo-icon {
+            width: 38px; height: 38px; background: #f5a623;
+            border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; font-size: 18px;
+        }
+        .navbar-links { display: flex; align-items: center; gap: 8px; }
+        .navbar-links a {
+            padding: 8px 18px; border-radius: 20px;
+            text-decoration: none; color: #555; font-size: 15px; font-weight: 500;
+        }
+        .navbar-links a.active { background: #fff3e0; color: #f5a623; font-weight: 600; }
+        .avatar {
+            width: 38px; height: 38px; background: #f5a623;
+            border-radius: 50%; display: flex;
+            align-items: center; justify-content: center;
+            color: white; font-weight: 700; font-size: 16px;
+        }
+        .container { max-width: 1100px; margin: 0 auto; padding: 32px; }
+        .page-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; }
+        .page-header h1 { font-size: 32px; font-weight: 800; }
+        .page-header p { color: #888; margin-top: 4px; }
+        .avg-cost-box {
+            background: white; border-radius: 12px;
+            padding: 16px 24px; text-align: right;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .avg-cost-box .label { color: #888; font-size: 13px; }
+        .avg-cost-box .amount { font-size: 28px; font-weight: 800; color: #1a1a1a; }
+        .alert-box {
+            background: #fff5f5; border: 1px solid #ffcdd2;
+            border-radius: 12px; padding: 16px 20px;
+            margin-bottom: 24px; color: #c0392b;
+            display: flex; align-items: center; gap: 12px;
+            font-weight: 500;
+        }
+        .grid { display: grid; grid-template-columns: 1fr 2fr; gap: 24px; margin-bottom: 24px; }
+        .card {
+            background: white; border-radius: 16px; padding: 28px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        .card h3 { font-size: 16px; font-weight: 700; margin-bottom: 20px; }
+        /* Donut */
+        .donut-wrap { display: flex; justify-content: center; align-items: center; margin: 16px 0; }
+        .donut {
+            width: 160px; height: 160px;
+            border-radius: 50%;
+            background: conic-gradient(#f5a623 0% 67%, #eee 67% 100%);
+            display: flex; align-items: center; justify-content: center;
+            position: relative;
+        }
+        .donut-inner {
+            width: 110px; height: 110px;
+            background: white; border-radius: 50%;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+        }
+        .donut-pct { font-size: 26px; font-weight: 800; }
+        .donut-label { font-size: 11px; color: #888; }
+        .total-line { text-align: center; margin-top: 12px; }
+        .total-line .big { font-size: 22px; font-weight: 800; }
+        .total-line .small { color: #888; font-size: 13px; }
+        .remaining { color: #2ec4b6; font-weight: 600; font-size: 14px; text-align: center; margin-top: 6px; }
+        /* Category cards */
+        .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .cat-card {
+            background: white; border-radius: 14px; padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .cat-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .cat-name { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px; }
+        .cat-pct { color: #888; font-size: 13px; }
+        .cat-amount { font-size: 26px; font-weight: 800; margin-bottom: 4px; }
+        .cat-of { color: #888; font-size: 13px; margin-bottom: 12px; }
+        .progress-bar { background: #f0f0f0; border-radius: 10px; height: 8px; overflow: hidden; }
+        .progress-fill { height: 100%; border-radius: 10px; }
+        /* TN Recommendations */
+        .tn-section { background: white; border-radius: 16px; padding: 28px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+        .tn-section h2 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+        .tn-section p { color: #888; font-size: 14px; margin-bottom: 20px; }
+        .tn-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+        .tn-card {
+            border: 2px solid #f0f0f0; border-radius: 12px;
+            padding: 18px; text-align: center; transition: border-color 0.2s;
+        }
+        .tn-card:hover { border-color: #f5a623; }
+        .tn-emoji { font-size: 30px; margin-bottom: 8px; }
+        .tn-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+        .tn-budget { font-size: 20px; font-weight: 800; color: #f5a623; }
+        .tn-days { font-size: 12px; color: #888; margin-top: 4px; }
+        .tn-breakdown { font-size: 11px; color: #aaa; margin-top: 8px; line-height: 1.6; }
+    </style>
+</head>
+<body>
+<nav class="navbar">
+    <a href="/dashboard" class="navbar-logo">
+        <div class="logo-icon">✈️</div>
+        Traveloop
+    </a>
+    <div class="navbar-links">
+        <a href="/dashboard">Home</a>
+        <a href="/my-trips">My Trips</a>
+        <a href="/budget" class="active">Budget</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:16px;">
+        <span>🔔</span>
+        <div class="avatar">{{ session['user_name'][0].upper() }}</div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="page-header">
+        <div>
+            <h1>Budget Breakdown</h1>
+            <p>Tamil Nadu Trip · Plan & Track</p>
+        </div>
+        <div class="avg-cost-box">
+            <div class="label">📈 Avg cost / day</div>
+            <div class="amount">₹2,500</div>
+        </div>
+    </div>
+
+    <div class="alert-box">
+        ⚠️ <span><strong>Heads up:</strong> Ooty trip 1 day exceeded your daily budget!</span>
+    </div>
+
+    <div class="grid">
+        <!-- Donut -->
+        <div class="card">
+            <h3>Total Spent vs Budget</h3>
+            <div class="donut-wrap">
+                <div class="donut">
+                    <div class="donut-inner">
+                        <div class="donut-pct">67%</div>
+                        <div class="donut-label">of budget used</div>
+                    </div>
+                </div>
+            </div>
+            <div class="total-line">
+                <div class="big">₹33,500 / ₹50,000</div>
+                <div class="small">Total planned</div>
+            </div>
+            <div class="remaining">₹16,500 remaining</div>
+        </div>
+
+        <!-- Category cards -->
+        <div class="cat-grid">
+            <div class="cat-card">
+                <div class="cat-top">
+                    <div class="cat-name">🚂 Transport</div>
+                    <div class="cat-pct">76%</div>
+                </div>
+                <div class="cat-amount">₹11,400</div>
+                <div class="cat-of">of ₹15,000</div>
+                <div class="progress-bar"><div class="progress-fill" style="width:76%;background:#f5a623;"></div></div>
+            </div>
+            <div class="cat-card">
+                <div class="cat-top">
+                    <div class="cat-name">🏨 Stay</div>
+                    <div class="cat-pct">60%</div>
+                </div>
+                <div class="cat-amount">₹9,000</div>
+                <div class="cat-of">of ₹15,000</div>
+                <div class="progress-bar"><div class="progress-fill" style="width:60%;background:#2ec4b6;"></div></div>
+            </div>
+            <div class="cat-card">
+                <div class="cat-top">
+                    <div class="cat-name">🎭 Activities</div>
+                    <div class="cat-pct">52%</div>
+                </div>
+                <div class="cat-amount">₹5,200</div>
+                <div class="cat-of">of ₹10,000</div>
+                <div class="progress-bar"><div class="progress-fill" style="width:52%;background:#9b59b6;"></div></div>
+            </div>
+            <div class="cat-card">
+                <div class="cat-top">
+                    <div class="cat-name">🍛 Food</div>
+                    <div class="cat-pct">79%</div>
+                </div>
+                <div class="cat-amount">₹7,900</div>
+                <div class="cat-of">of ₹10,000</div>
+                <div class="progress-bar"><div class="progress-fill" style="width:79%;background:#27ae60;"></div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TN Budget Guide -->
+    <div class="tn-section">
+        <h2>🏛️ Tamil Nadu Budget Recommendations</h2>
+        <p>Estimated per person budget for popular destinations</p>
+        <div class="tn-grid">
+            <div class="tn-card">
+                <div class="tn-emoji">🏖️</div>
+                <h4>Chennai</h4>
+                <div class="tn-budget">₹8,000</div>
+                <div class="tn-days">3 days</div>
+                <div class="tn-breakdown">Stay: ₹3,000<br>Food: ₹1,500<br>Transport: ₹2,000<br>Activities: ₹1,500</div>
+            </div>
+            <div class="tn-card">
+                <div class="tn-emoji">🏔️</div>
+                <h4>Ooty</h4>
+                <div class="tn-budget">₹6,500</div>
+                <div class="tn-days">2 days</div>
+                <div class="tn-breakdown">Stay: ₹2,500<br>Food: ₹1,000<br>Transport: ₹1,500<br>Activities: ₹1,500</div>
+            </div>
+            <div class="tn-card">
+                <div class="tn-emoji">🛕</div>
+                <h4>Madurai</h4>
+                <div class="tn-budget">₹5,000</div>
+                <div class="tn-days">2 days</div>
+                <div class="tn-breakdown">Stay: ₹2,000<br>Food: ₹800<br>Transport: ₹1,200<br>Activities: ₹1,000</div>
+            </div>
+            <div class="tn-card">
+                <div class="tn-emoji">🌊</div>
+                <h4>Rameswaram</h4>
+                <div class="tn-budget">₹4,500</div>
+                <div class="tn-days">2 days</div>
+                <div class="tn-breakdown">Stay: ₹1,800<br>Food: ₹700<br>Transport: ₹1,200<br>Activities: ₹800</div>
+            </div>
+            <div class="tn-card">
+                <div class="tn-emoji">🏝️</div>
+                <h4>Kanyakumari</h4>
+                <div class="tn-budget">₹5,500</div>
+                <div class="tn-days">2 days</div>
+                <div class="tn-breakdown">Stay: ₹2,200<br>Food: ₹800<br>Transport: ₹1,500<br>Activities: ₹1,000</div>
+            </div>
+            <div class="tn-card">
+                <div class="tn-emoji">🌿</div>
+                <h4>Kodaikanal</h4>
+                <div class="tn-budget">₹7,000</div>
+                <div class="tn-days">3 days</div>
+                <div class="tn-breakdown">Stay: ₹3,000<br>Food: ₹1,000<br>Transport: ₹1,500<br>Activities: ₹1,500</div>
+            </div>
+            <div class="tn-card">
+                <div class="tn-emoji">🏛️</div>
+                <h4>Thanjavur</h4>
+                <div class="tn-budget">₹4,000</div>
+                <div class="tn-days">1 day</div>
+                <div class="tn-breakdown">Stay: ₹1,500<br>Food: ₹600<br>Transport: ₹1,000<br>Activities: ₹900</div>
+            </div>
+            <div class="tn-card">
+                <div class="tn-emoji">🐘</div>
+                <h4>Mahabalipuram</h4>
+                <div class="tn-budget">₹3,500</div>
+                <div class="tn-days">1 day</div>
+                <div class="tn-breakdown">Stay: ₹1,200<br>Food: ₹500<br>Transport: ₹900<br>Activities: ₹900</div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
